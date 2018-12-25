@@ -30,7 +30,13 @@ def callback():
         info.access_token = data['access_token']
         info.expired_time = data['expires_in']
         info.created_time = getCurrentDate()
+        info.refresh_token = data['refresh_token']
+        info.refresh_token_expires_in = data['refresh_token_expires_in']
+        info.scope = data['scope']
+        info.business_id = data['business_id']
+        info.public_account_id = data['public_account_id']
         db.session.add(info)
         db.session.commit()
+        return '授权成功'
 
     return jsonify(data)
