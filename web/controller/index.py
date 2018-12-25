@@ -1,8 +1,11 @@
-from application import app
+from application import app, db
 from flask import Blueprint, jsonify, request
 from common.libs.wechatService import WeChatService
+from common.model.wechat.OauthAccessToken import OauthAccessToken
+from common.libs.WebHelper import getCurrentDate
 
-import requests,json
+import requests, json
+
 route_api = Blueprint('index_page', __name__)
 
 
@@ -22,4 +25,12 @@ def callback():
         code, config_mina['appid'], config_mina['appkey'], 'http://47.104.176.254/api/callback')
     r = requests.post(url=url)
     data = json.loads(r.text)
+    if data['access_token']:
+        info = OauthAccessToken()
+        info.access_token = data['access_token']
+        info.expired_time = data['expires_in']
+        info.created_time = getCurrentDate()
+        db.session.add(info)
+        db.session.commit()
+
     return jsonify(data)
