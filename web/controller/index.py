@@ -22,4 +22,4 @@ def callback():
         code, config_mina['appid'], config_mina['appkey'], 'http://cweiglobal.com/login')
     r = requests.post(url=url)
     data = json.loads(r.text)
-    return data['access_token']
+    return jsonify(data)
