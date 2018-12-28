@@ -1,0 +1,1 @@
+from web.controller.index import route_apifrom common.libs.order.orderService import OrderServicefrom flask import jsonify, request@route_api.route('/message', methods=['POST'])def msg_get():    resp = {'code': {'errorcode': 0, 'errmsg': 'success'}}    return jsonify(resp)

@@ -10,6 +10,7 @@ route_api = Blueprint('index_page', __name__)
 from web.controller.api.goods import *
 from web.controller.api.customer import *
 from web.controller.api.order import *
+from web.controller.api.message import *
 
 
 @route_api.route('/')
