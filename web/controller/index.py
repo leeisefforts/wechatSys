@@ -7,12 +7,20 @@ from common.libs.WebHelper import getCurrentDate
 import requests, json
 
 route_api = Blueprint('index_page', __name__)
+from web.controller.api.goods import *
+from web.controller.api.customer import *
+from web.controller.api.order import *
 
 
 @route_api.route('/')
 @route_api.route('/index')
 def index():
     return 'Api is ready'
+
+
+@route_api.route('/testToken')
+def testToken():
+    return WeChatService().getAccessToken()
 
 
 @route_api.route('/callback')

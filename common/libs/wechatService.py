@@ -76,27 +76,31 @@ class WeChatService():
 
     def getAccessToken(self):
         token = None
-        token_info = OauthAccessToken.query.filter(OauthAccessToken.expired_time >= getCurrentDate()).first()
-        if token_info:
+        token_info = OauthAccessToken.query.order_by(OauthAccessToken.id.desc()).first()
+        if token_info and token_info.expired_time >= getCurrentDate():
             token = token_info.access_token
             return token
 
         config_mina = app.config['MINA_APP']
-        url = "https://open.weimob.com/common/token?grant_type=client_credential&appid={0}&secret={1}" \
-            .format(config_mina['appid'], config_mina['appkey'])
+        url = "https://dopen.weimob.com/fuwu/b/oauth2/token?grant_type=refresh_token&client_id={0}&client_secret={1}&refresh_token={2}" \
+            .format(config_mina['appid'], config_mina['appkey'], token_info.refresh_token)
 
-        r = requests.get(url=url)
+        r = requests.post(url=url)
         if r.status_code != 200 or not r.text:
             return token
 
         data = json.loads(r.text)
         now = datetime.datetime.now()
-        date = now + datetime.timedelta(seconds=data['data']['expire_in'] - 200)
+        date = now + datetime.timedelta(seconds=data['expires_in'] - 200)
         model_token = OauthAccessToken()
-        model_token.access_token = data['data']['access_token']
+        model_token.access_token = data['access_token']
         model_token.expired_time = date.strftime("%Y-%m-%d %H:%M:%S")
         model_token.created_time = getCurrentDate()
+        model_token.refresh_token = data['refresh_token']
+        model_token.refresh_token_expires_in = data['refresh_token_expires_in']
+        model_token.scope = data['scope']
+        model_token.business_id = data['business_id']
+        model_token.public_account_id = data['public_account_id']
         db.session.add(model_token)
         db.session.commit()
-
-        return data['data']['access_token']
+        return data['access_token']
