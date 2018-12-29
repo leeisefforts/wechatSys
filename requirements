@@ -3,5 +3,5 @@ flask-script
 flask-sqlalchemy
 flask-debugtoolbar
 pymysql
-
+flask-cors
 requests
