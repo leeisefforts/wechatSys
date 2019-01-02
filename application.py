@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import *
 import os
 
 
@@ -16,6 +17,7 @@ class Application(Flask):
 db = SQLAlchemy()
 app = Application(__name__, template_folder=os.getcwd() + "/web/templates/", root_path=os.getcwd(),
                   static_folder=os.getcwd() + "/web/static/")
+CORS(app, resources=r'/*')
 manager = Manager(app)
 
 '''
