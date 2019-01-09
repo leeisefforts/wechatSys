@@ -19,9 +19,17 @@ SQLALCHEMY_BINDS = {
 }
 
 MINA_APP = {
-    'appid':'538F91180F6A814CF506865089323FCE',
-    'appkey':'E4BEF179E89C70BCC43DC08588869FBC',
-    'paykey':'TM8KwVFRlp0hsTWMQTxLplfFIzmk7csr',
-    'mch_id':'1513434041',
-    'callback_url':'/api/order/callback'
+    'appid': '538F91180F6A814CF506865089323FCE',
+    'appkey': 'E4BEF179E89C70BCC43DC08588869FBC',
+    'paykey': 'TM8KwVFRlp0hsTWMQTxLplfFIzmk7csr',
+    'mch_id': '1513434041',
+    'callback_url': '/api/order/callback'
+}
+
+PAY_STATUS_DISPLAY_MAPPING = {
+    "4": "已取消",
+    "3": "已完成",
+    "2": "已发货，待收货,",
+    "1": "已付款，待发货",
+    "0": "等待买家付款"
 }
